@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<web-app xmlns="http://java.sun.com/xml/ns/javaee" version="2.5">
+    <servlet>
+        <servlet-name>jsgi</servlet-name>
+        <servlet-class>org.appenginejs.JSGIServlet</servlet-class>
+        <init-param>
+            <param-name>environment</param-name>
+            <param-value>local</param-value>
+        </init-param>
+        <init-param>
+            <param-name>optimizationLevel</param-name>
+            <param-value>9</param-value>
+        </init-param>	
+        <init-param>
+            <param-name>timezone</param-name>
+            <param-value>Asia/Tokyo</param-value>
+        </init-param>
+    </servlet>
+    <servlet-mapping>
+        <servlet-name>jsgi</servlet-name>
+        <url-pattern>/sub</url-pattern>
+    </servlet-mapping>
+    <welcome-file-list>
+        <welcome-file>index.html</welcome-file>
+    </welcome-file-list>
+
+	<!-- xxxx -->
+	<servlet>
+        <servlet-name>jsgi2</servlet-name>
+        <servlet-class>org.appenginejs.JSGIServlet</servlet-class>
+        <init-param>
+            <param-name>environment</param-name>
+            <param-value>local2</param-value>
+        </init-param>
+        <init-param>
+            <param-name>optimizationLevel</param-name>
+            <param-value>9</param-value>
+        </init-param>	
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>jsgi2</servlet-name>
+		<url-pattern>/update</url-pattern>
+	</servlet-mapping>
+
+</web-app>
