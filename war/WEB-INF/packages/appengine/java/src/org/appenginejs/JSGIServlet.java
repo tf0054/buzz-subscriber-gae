@@ -5,6 +5,7 @@ import javax.servlet.*;
 
 import java.io.*;
 import java.util.TimeZone;
+// import java.util.regex.Pattern;
 
 import org.mozilla.javascript.*;
 
@@ -23,7 +24,13 @@ public class JSGIServlet extends HttpServlet {
             TimeZone.setDefault(TimeZone.getTimeZone(tz));
         }
 
-		final String modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF"));
+		String modulesPath = "";
+		if(System.getProperty("os.name").indexOf("Windows")>=0){
+			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF")).replaceAll("\\\\","\\\\\\\\");
+//			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF")).replaceAll(Pattern.quote("\\"),"\\\\\\\\");
+		} else {
+			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF"));
+		}
 		final String moduleName = getInitParam(config, "module", "jackconfig.js");
 		final String appName = getInitParam(config, "app", "app");
 		final int optimizationLevel = Integer.parseInt(getInitParam(config, "optimizationLevel", "9"));
@@ -63,6 +70,7 @@ public class JSGIServlet extends HttpServlet {
 			// load Servlet handler "process" method
 			handler = (Function)context.evaluateString(scope, "require('jack/handler/servlet').Servlet.process;", null, 1, null);
 			
+			System.err.println("Loading: \""+modulesPath+"/"+moduleName);
 			// load the app
 			Scriptable module = (Scriptable)context.evaluateString(scope, "require('"+modulesPath+"/"+moduleName+"');", null, 1, null);
 			

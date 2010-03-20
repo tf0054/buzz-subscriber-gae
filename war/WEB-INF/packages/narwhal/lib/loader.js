@@ -14,8 +14,6 @@ var file = require(/**/"file"/**/);
 //  we're done using it
 var read = file.read;
 
-var zzWork = 'd:\\work\\buzz-subscriber-gae\\war\\WEB-INF\\';
-
 exports.Loader = function (options) {
     var loader = {};
     var factories = options.factories || {};
@@ -33,12 +31,6 @@ exports.Loader = function (options) {
     loader.find = function (topId) {
         // if it's absolute only search the "root" directory.
         // file.join() must collapse multiple "/" into a single "/"
-
-	if(topId.match(/\-gae/)){
-		var zztmp = new Array();
-		zztmp = topId.match(/INF\/(.+)$/);
-		topId = zzWork+zztmp[1];
-	}
 
         var searchPaths = file.isAbsolute(topId) ? [""] : paths;
 

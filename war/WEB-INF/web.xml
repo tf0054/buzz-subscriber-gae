@@ -4,6 +4,12 @@
     <servlet>
         <servlet-name>jsgi</servlet-name>
         <servlet-class>org.appenginejs.JSGIServlet</servlet-class>
+<!--
+        <init-param>
+            <param-name>modulesPath</param-name>
+            <param-value>d:\\\\\\\\work\\\\\\\\buzz-gae\\\\\\\\war</param-value>
+        </init-param>
+-->
         <init-param>
             <param-name>environment</param-name>
             <param-value>local</param-value>

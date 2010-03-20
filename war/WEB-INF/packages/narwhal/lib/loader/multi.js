@@ -11,7 +11,6 @@ var LOADER = require("loader");
 exports.MultiLoader = function (options) {
 
     var factories = options.factories || {};
-    var zzWork = 'd:\\work\\buzz-subscriber-gae\\war\\WEB-INF\\';
 
     var self = {};
     self.paths = options.paths || [];
@@ -30,14 +29,6 @@ exports.MultiLoader = function (options) {
     self.find = function (topId) {
         // if it's absolute only search the "root" directory.
         // FILE.join() must collapse multiple "/" into a single "/"
-
-	if(topId.match(/\-gae/)){
-		var zztmp = new Array();
-		zztmp = topId.match(/INF\/(.+)$/);
-		// system.log.info("multi: "+zztmp[1]);
-		topId = zzWork+zztmp[1];
-		// system.log.info("multi: "+self.paths);
-	}
 
         var searchPaths = FILE.isAbsolute(topId) ? [""] :  self.paths;
         
