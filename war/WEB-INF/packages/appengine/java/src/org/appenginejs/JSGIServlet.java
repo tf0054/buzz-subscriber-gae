@@ -5,7 +5,6 @@ import javax.servlet.*;
 
 import java.io.*;
 import java.util.TimeZone;
-// import java.util.regex.Pattern;
 
 import org.mozilla.javascript.*;
 
@@ -31,24 +30,20 @@ public class JSGIServlet extends HttpServlet {
 		} else {
 			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF"));
 		}
-		final String moduleName = getInitParam(config, "module", "jackconfig.js");
+		final String moduleName = getInitParam(config, "module", "src/jackconfig.js");
 		final String appName = getInitParam(config, "app", "app");
-		final int optimizationLevel = Integer.parseInt(getInitParam(config, "optimizationLevel", "9"));
     	
 		final String narwhalHome = getServletContext().getRealPath("WEB-INF/packages/narwhal");
-		final String narwhalFilename = "engines/rhino/bootstrap.js";
-		
+		final String narwhalEngineHome = getServletContext().getRealPath("WEB-INF/packages/narwhal/engines/rhino");
+//		final String narwhalEngineHome = getServletContext().getRealPath("WEB-INF/packages/narwhal-appengine");
+		final String narwhalFilename = "bootstrap.js";
+
+		int optimizationLevel = Integer.parseInt(getInitParam(config, "optimizationLevel", "-1"));
+        String environmentName = getInitParam(config, "environment", null);
+
 		Context context = Context.enter();
+
 		try {
-			context.setOptimizationLevel(optimizationLevel);
-			scope = new ImporterTopLevel(context);
-			
-			ScriptableObject.putProperty(scope, "NARWHAL_HOME",  Context.javaToJS(narwhalHome, scope));
-			ScriptableObject.putProperty(scope, "SERVLET_CONTEXT",  Context.javaToJS(getServletContext(), scope));
-			//ScriptableObject.putProperty(scope, "$DEBUG",  Context.javaToJS(true, scope));
-
-            String environmentName = getInitParam(config, "environment", null);
-
             if (environmentName == null) {
                 // if no explicit environmentName is provided, detect if we run on the
                 // actual App Engine Server or the Development server and set the environment
@@ -59,18 +54,27 @@ public class JSGIServlet extends HttpServlet {
                 } else {
                     environmentName = "local";
                 }
-            }                
+            }
+
+            if (environmentName.equals("hosted")) {
+                optimizationLevel = 9;
+            }
+
+			scope = new ImporterTopLevel(context);
+			
+			ScriptableObject.putProperty(scope, "NARWHAL_HOME",  Context.javaToJS(narwhalHome, scope));
+			ScriptableObject.putProperty(scope, "NARWHAL_HOME",  Context.javaToJS(narwhalHome, scope));
+			ScriptableObject.putProperty(scope, "NARWHAL_OPTIMIZATION",  Context.javaToJS(optimizationLevel, scope));
+			ScriptableObject.putProperty(scope, "SERVLET_CONTEXT",  Context.javaToJS(getServletContext(), scope));
+
+			context.setOptimizationLevel(optimizationLevel);			
 
 			// load Narwhal
-			context.evaluateReader(scope, new FileReader(narwhalHome+"/"+narwhalFilename), narwhalFilename, 1, null);
+			context.evaluateReader(scope, new FileReader(narwhalEngineHome + "/" + narwhalFilename), narwhalFilename, 1, null);
 
-            // WARN: set optimization level after bootstraping!
-			context.setOptimizationLevel(optimizationLevel);
-			
 			// load Servlet handler "process" method
 			handler = (Function)context.evaluateString(scope, "require('jack/handler/servlet').Servlet.process;", null, 1, null);
 			
-			System.err.println("Loading: \""+modulesPath+"/"+moduleName);
 			// load the app
 			Scriptable module = (Scriptable)context.evaluateString(scope, "require('"+modulesPath+"/"+moduleName+"');", null, 1, null);
 			
@@ -95,6 +99,7 @@ public class JSGIServlet extends HttpServlet {
     
 	public void service(HttpServletRequest request, HttpServletResponse response) throws IOException {
 		Context context = Context.enter();
+
 		try	{
 			Object args[] = {app, request, response};
 			handler.call(context, scope, null, args);

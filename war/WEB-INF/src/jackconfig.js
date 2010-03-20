@@ -1,10 +1,10 @@
-require.paths.unshift("WEB-INF/src");
+// require.paths.unshift("WEB-INF/src");
 
 var ContentLength = require("jack/contentlength").ContentLength;
 
-exports.app = require('./src/index').app;
+exports.app = require('./index').app;
 
-exports.app2 = require('./src/update').app;
+exports.app2 = require('./update').app;
 // exports.app2 = require('./src/test').app;
 
 // exports.app3 = require('./src/mail-receive').app;
