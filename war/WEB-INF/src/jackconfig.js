@@ -1,6 +1,3 @@
-// require.paths.unshift("WEB-INF/src");
-
-// var ContentLength = require("jack/contentlength").ContentLength;
 
 var ContentLength = require("jack/contentlength").ContentLength,
     MethodOverride = require("jack/methodoverride").MethodOverride,
@@ -10,13 +7,11 @@ var Dispatch = require("nitro/dispatch").Dispatch,
     Path = require("nitro/path").Path,
     Errors = require("nitro/errors").Errors,
     Render = require("nitro/render").Render;
-	
+
+// nitroを使わない場合の呼び出し方
 // exports.app = require('./index').app;
 
-// exports.app2 = require('./update').app;
-// exports.app2 = require('./src/test').app;
-
-// exports.app3 = require('./src/mail-receive').app;
+// 直接書いてもよい
 // exports.app3 = function(env) {
     // return {
         // status : 200,
@@ -29,19 +24,15 @@ var Dispatch = require("nitro/dispatch").Dispatch,
 exports.app = ContentLength(Head(MethodOverride(
         Path(Errors(
 		Render(Dispatch({dispatchRoot: "WEB-INF/src/root"}),
-		{templateRoot: "WEB-INF/src/templates2"})
+		{templateRoot: "WEB-INF/src/templates"})
 	))
 )));
-//         Path(Errors(Render(Wrap(Dispatch({dispatchRoot: "WEB-INF/src/root"})), {templateRoot: "WEB-INF/src/templates"}))))));
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - */
 
+// nitroを使わない場合
 // exports.local = function(app) {
     // return ContentLength(exports.app);
-// }
-
-// exports.local2 = function(app) {
-    // return ContentLength(exports.app2);
 // }
 
 exports.local = function(app) {

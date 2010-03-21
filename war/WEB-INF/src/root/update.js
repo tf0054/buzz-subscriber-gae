@@ -56,12 +56,6 @@ exports.POST = function(env) {
 		system.log.info('params['+i+']: ' + params[i]);
 	}
 	
-	// POSTだからパラメータだろうとたかをくくっていたら。。ちがうみたい。
-	// http://pubsubhubbub.googlecode.com/svn/trunk/pubsubhubbub-core-0.3.html#rfc.section.7.3
-	// for(var i in ){
-		// system.log.info('env['+i+']: ' + env[i]);
-	// }
-	
 	// なんとコンテンツ変更通知はPOSTのbodyに入ってくる!
 	var strTmp = new Request(env).body(); //でもBinaryStringでした。。
 	system.log.info('body: ' + strTmp.decodeToString("utf-8"));
