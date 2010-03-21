@@ -26,30 +26,12 @@
     </servlet>
     <servlet-mapping>
         <servlet-name>jsgi</servlet-name>
-        <url-pattern>/nitro/*</url-pattern>
+        <url-pattern>/*</url-pattern>
     </servlet-mapping>
 
 	<!-- xxxx -->
     <welcome-file-list>
         <welcome-file>index.html</welcome-file>
     </welcome-file-list>
-
-	<!-- xxxx -->
-	<servlet>
-        <servlet-name>jsgi2</servlet-name>
-        <servlet-class>org.appenginejs.JSGIServlet</servlet-class>
-        <init-param>
-            <param-name>environment</param-name>
-            <param-value>local2</param-value>
-        </init-param>
-        <init-param>
-            <param-name>optimizationLevel</param-name>
-            <param-value>9</param-value>
-        </init-param>	
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>jsgi2</servlet-name>
-		<url-pattern>/update</url-pattern>
-	</servlet-mapping>
 
 </web-app>

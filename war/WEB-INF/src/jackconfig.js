@@ -13,7 +13,7 @@ var Dispatch = require("nitro/dispatch").Dispatch,
 	
 // exports.app = require('./index').app;
 
-exports.app2 = require('./update').app;
+// exports.app2 = require('./update').app;
 // exports.app2 = require('./src/test').app;
 
 // exports.app3 = require('./src/mail-receive').app;
@@ -40,9 +40,9 @@ exports.app = ContentLength(Head(MethodOverride(
     // return ContentLength(exports.app);
 // }
 
-exports.local2 = function(app) {
-    return ContentLength(exports.app2);
-}
+// exports.local2 = function(app) {
+    // return ContentLength(exports.app2);
+// }
 
 exports.local = function(app) {
     return exports.app;

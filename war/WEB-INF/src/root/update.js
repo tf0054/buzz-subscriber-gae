@@ -20,36 +20,29 @@ exports.GET = function(env) {
 		params[j] = params[i];
 		system.log.info(i + ': ' + params[i]);
 	}
-	if(hub_mode != undefined){
-		if(hub_mode == 'subscribe'){
-			var msg = new Message({
-				topic:params.hub_topic,  // GAEとしてのリファレンス用
-				challenge:params.hub_challenge // ページデータとして使う用
-			});
-			msg.put();	
-			
-			system.log.info(params.hub_topic + ': ' + params.hub_challenge);
-			
-			return {status: 200, headers: {"Content-Type": "text/html"}, body: [params.hub_challenge]};
-		} else {
-			system.log.info("unusual response!");
 
-			for(var i in params){
-				system.log.info(i + ': ' + params[i]);
-			}
-			return {data: {
-				body: "unusual response!"
-			}};
-	//		return {status: 200, headers: {"Content-Type": "text/html"}, body: ["unusual response!"]};
-		}
+	if(params.hub_mode == undefined){
+		params.hub_mode = "unknown";
+	}
+	
+	if(params.hub_mode == 'subscribe'){
+		var msg = new Message({
+			topic:params.hub_topic,  // GAEとしてのリファレンス用
+			challenge:params.hub_challenge // ページデータとして使う用
+		});
+		msg.put();	
+		
+		system.log.info(params.hub_topic + ': ' + params.hub_challenge);
+		
+		return {status: 200, headers: {"Content-Type": "text/html"}, body: [params.hub_challenge]};
 	} else {
-		system.log.info("seems non hub request!");
+		system.log.info("unusual response!");
 
 		for(var i in params){
 			system.log.info(i + ': ' + params[i]);
 		}
 		return {data: {
-			body: "seems non hub request!"
+			body: "unusual response!"
 		}};
 //		return {status: 200, headers: {"Content-Type": "text/html"}, body: ["unusual response!"]};
 	}
