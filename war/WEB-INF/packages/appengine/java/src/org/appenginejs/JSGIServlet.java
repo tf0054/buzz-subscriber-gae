@@ -26,7 +26,6 @@ public class JSGIServlet extends HttpServlet {
 		String modulesPath = "";
 		if(System.getProperty("os.name").indexOf("Windows")>=0){
 			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF")).replaceAll("\\\\","\\\\\\\\");
-//			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF")).replaceAll(Pattern.quote("\\"),"\\\\\\\\");
 		} else {
 			modulesPath = getServletContext().getRealPath(getInitParam(config, "modulesPath", "WEB-INF"));
 		}
@@ -62,7 +61,7 @@ public class JSGIServlet extends HttpServlet {
 
 			scope = new ImporterTopLevel(context);
 			
-			ScriptableObject.putProperty(scope, "NARWHAL_HOME",  Context.javaToJS(narwhalHome, scope));
+		//	ScriptableObject.putProperty(scope, "NARWHAL_HOME",  Context.javaToJS(narwhalHome, scope));
 			ScriptableObject.putProperty(scope, "NARWHAL_HOME",  Context.javaToJS(narwhalHome, scope));
 			ScriptableObject.putProperty(scope, "NARWHAL_OPTIMIZATION",  Context.javaToJS(optimizationLevel, scope));
 			ScriptableObject.putProperty(scope, "SERVLET_CONTEXT",  Context.javaToJS(getServletContext(), scope));

@@ -15,10 +15,7 @@ exports.app = function(env) {
 exports.GET = function(env) {
 	var params = new Request(env).params();
 	var messages = Message.all().order("-created").fetch();
-       var body = '<html><head>\n\
-		<style>label {display: block} .message { border: 1px solid #ccc; padding: 1em; margin-bottom: 1em }</style>\n\
-		</head><body>\n\
-		<h1>update</h1>';
+       var body = '<h1>update</h1>';
 		
 	if(params.key == undefined){
 		params.key = 'sync,async';
@@ -41,7 +38,6 @@ exports.GET = function(env) {
 	}
 
 	body += '<hr/>\n' + new Date();
-	body += '</body></html>';
 
 	return {data: {
 		body: body

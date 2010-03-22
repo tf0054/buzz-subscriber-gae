@@ -5,7 +5,7 @@
     <servlet>
         <servlet-name>jsgi</servlet-name>
         <servlet-class>org.appenginejs.JSGIServlet</servlet-class>
-<!--
+<!-- パラメータとしては動くけど、(GAEに乗せたいのだから)固定にしてしまうわけにはいかない。。。
         <init-param>
             <param-name>modulesPath</param-name>
             <param-value>d:\\\\\\\\work\\\\\\\\buzz-gae\\\\\\\\war</param-value>
